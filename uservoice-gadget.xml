@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-    <!-- based on gadget by SAN Gear http://gadgets-widgets.googlecode.com/svn/trunk/disqus/ -->
+    <!-- See http://uservoice.com for Uservoice service description -->
     <ModulePrefs
             title="Uservoice for Google Sites"
             title_url="https://code.google.com/p/google-sites-uservoice/"
@@ -61,7 +61,7 @@
 		var uv=document.createElement('script');
 		uv.type='text/javascript';
 		uv.async=true;
-		uv.src='//widget.uservoice.com/' + pref_uv_id + '.js';
+		uv.src='//widget.uservoice.com/' + prefs.getString("uv_id") + '.js';
 		var s=document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(uv,s);
 	})()
