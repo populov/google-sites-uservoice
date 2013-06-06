@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <!-- See http://uservoice.com for Uservoice service description -->
+  <ModulePrefs
+          title="Uservoice for Google Sites"
+          title_url="https://code.google.com/p/google-sites-uservoice/"
+          description="Add support and feedback features provided by Uservoice service to your Google Site"
+          directory_title="Uservoice for Google Sites"
+          thumbnail="https://google-sites-uservoice.googlecode.com/git/gsuv-logo.png"
+          screenshot="https://google-sites-uservoice.googlecode.com/git/screen.png"
+          author="Serge Populov"
+          author_aboutme="Software Developer"
+          author_link="http://serge.populov.com/"
+          author_quote="Simple. Fucking Good."
+          author_photo="https://sites.google.com/a/populov.com/serge/home/photo.jpg"
+          author_location="Russia"
+          author_affiliation="Haunted Soft"
+          height="550"
+          width="100%"
+          scaling="false"
+          scrolling="false"
+            >
+  </ModulePrefs>
+
+  <UserPref
+      name="uv_id"
+      datatype="string"
+      display_name="Uservoice script ID"
+      default_value="pJSyCeGizQrpajcmlQ8ug"
+      required="true"/>
+  <UserPref
+      name="uv_mode"
+      datatype="enum"
+      display_name="Widget mode"
+      default_value="full">
+    <EnumValue value="full" display_value="Give feedback &amp; Contact support"/>
+    <EnumValue value="feedback" display_value="Give feedback only"/>
+    <EnumValue value="support" display_value="Contact support only"/>
+  </UserPref>
+  <UserPref
+      name="uv_default_tab"
+      datatype="enum"
+      display_name="Default tab selection"
+      default_value="support">
+    <EnumValue value="support" display_value="Contact support only"/>
+    <EnumValue value="feedback" display_value="Give feedback only"/>
+  </UserPref>
+  <UserPref
+      name="uv_primary_color"
+      datatype="string"
+      display_name="Primary color"
+      default_value="#364149"/>
+  <UserPref
+      name="uv_tab_color"
+      datatype="string"
+      display_name="Tab color"
+      default_value="#364149"/>
+  <UserPref
+      name="uv_link_color"
+      datatype="string"
+      display_name="Link color"
+      default_value="#007dbf"/>
+
+  <Content type="html" >
+    <![CDATA[
+	<!-- UserVoice JavaScript SDK (only needed once on a page) -->
+	<script>
+        var prefs = new gadgets.Prefs();
+
+	(function(){
+		var uv=document.createElement('script');
+		uv.type='text/javascript';
+		uv.async=true;
+		uv.src='//widget.uservoice.com/' + prefs.getString("uv_id") + '.js';
+		var s=document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(uv,s);
+	})()
+	</script>
+
+	<!-- A tab to launch the Classic Widget -->
+	<script>
+  var hexColorPattern = /^\s*([abcdef\d]{6})\s*$/i;
+  function getColor(color_target) {
+    var value = prefs.getString(color_target);
+    if (value == null || value == "")
+      return null;
+    var matches = hexColorPattern.execute(value);
+    if (matches != null && matches.length > 0)
+      return "#" + matches[1];
+    else
+      return value;
+  }
+	UserVoice = window.UserVoice || [];
+	UserVoice.push(['showTab', 'classic_widget', {
+	  mode: prefs.getString("uv_mode"),
+	  primary_color: getColor('uv_primary_color'),
+	  link_color: getColor("uv_link_color"),
+	  default_mode: 'feedback',
+	  forum_id: 209537,
+	  tab_label: 'Feedback & Support',
+	  tab_color: getColor("uv_tab_color"),
+	  tab_position: 'middle-right',
+	  tab_inverted: true
+	}]);
+	</script>
+
+        ]]>
+  </Content>
+</Module>
