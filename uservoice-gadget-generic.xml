@@ -29,6 +29,11 @@
       default_value="pJSyCeGizQrpajcmlQ8ug"
       required="true"/>
   <UserPref
+      name="uv_forum_id"
+      datatype="string"
+      display_name="Forum ID"
+      default_value="" />
+  <UserPref
       name="uv_mode"
       datatype="enum"
       display_name="Widget mode"
@@ -42,66 +47,111 @@
       datatype="enum"
       display_name="Default tab selection"
       default_value="support">
-    <EnumValue value="support" display_value="Contact support only"/>
-    <EnumValue value="feedback" display_value="Give feedback only"/>
+    <EnumValue value="support" display_value="Contact support"/>
+    <EnumValue value="feedback" display_value="Give feedback"/>
   </UserPref>
   <UserPref
       name="uv_primary_color"
       datatype="string"
       display_name="Primary color"
-      default_value="#364149"/>
-  <UserPref
-      name="uv_tab_color"
-      datatype="string"
-      display_name="Tab color"
-      default_value="#364149"/>
+      default_value="#cc6d00"/>
   <UserPref
       name="uv_link_color"
       datatype="string"
       display_name="Link color"
       default_value="#007dbf"/>
+  <UserPref
+      name="uv_support_tab_name"
+      datatype="string"
+      display_name="Custom support tab name (optional)"
+      default_value=""/>
+  <UserPref
+      name="uv_feedback_tab_name"
+      datatype="string"
+      display_name="Custom feedback tab name (optional)"
+      default_value=""/>
+
 
   <Content type="html" >
     <![CDATA[
-	<!-- UserVoice JavaScript SDK (only needed once on a page) -->
+    <div id="uv_gadget"></div>
 	<script>
-        var prefs = new gadgets.Prefs();
+  var uservoiceGadget = function () {
+    var prefs = new gadgets.Prefs();
+    var hexColorPattern = /^\s*([abcdef\d]{6})\s*$/i;
 
-	(function(){
-		var uv=document.createElement('script');
-		uv.type='text/javascript';
-		uv.async=true;
-		uv.src='//widget.uservoice.com/' + prefs.getString("uv_id") + '.js';
-		var s=document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(uv,s);
-	})()
-	</script>
+    var uv_id = prefs.getString("uv_id");
+    var uv_forum_id = prefs.getString("uv_forum_id");
+    var uv_mode = prefs.getString("uv_mode");
+    var uv_default_mode = uv_mode == "full" ? prefs.getString("uv_default_tab") : "";
+    var uv_primary_color = getColor("uv_primary_color");
+    var uv_link_color = getColor("uv_link_color");
+    var uv_tab_color = getColor("uv_tab_color");
+    var uv_support_tab_name = prefs.getString("uv_support_tab_name");
+    var uv_feedback_tab_name = prefs.getString("uv_feedback_tab_name");
 
-	<!-- A tab to launch the Classic Widget -->
-	<script>
-  var hexColorPattern = /^\s*([abcdef\d]{6})\s*$/i;
-  function getColor(color_target) {
-    var value = prefs.getString(color_target);
-    if (value == null || value == "")
-      return null;
-    var matches = hexColorPattern.execute(value);
-    if (matches != null && matches.length > 0)
-      return "#" + matches[1];
-    else
-      return value;
+    // UserVoice JavaScript SDK (only needed once on a page)
+    function injectUservoiceScript() {
+        var uv = document.createElement('script');
+        uv.type = 'text/javascript';
+        uv.async = false;
+        uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/' + uv_id + '.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(uv, s);
+    }
+
+    function getColor(color_target) {
+        var value = prefs.getString(color_target);
+        if (value == null || value == "")
+            return null;
+        var matches = hexColorPattern.exec(value);
+        if (matches != null && matches.length > 0)
+            return "#" + matches[1];
+        else
+            return value;
+    }
+
+    function initPlaceholder() {
+        ug = document.getElementById("uv_gadget");
+        ug.setAttribute("data-uv-inline", "classic_widget");
+        if (uv_forum_id)
+            ug.setAttribute("data-uv-forum-id", uv_forum_id);
+        ug.setAttribute("data-uv-mode", uv_mode);
+        if (uv_mode == "full")
+            ug.setAttribute("data-uv-default-mode", uv_default_mode);
+        if (uv_support_tab_name)
+            ug.setAttribute("data-uv-support-tab_name", uv_support_tab_name);
+        if (uv_feedback_tab_name)
+            ug.setAttribute("data-uv-feedback-tab_name", uv_feedback_tab_name);
+
+        ug.setAttribute("data-uv-primary-color", uv_primary_color);
+        ug.setAttribute("data-uv-link-color", uv_link_color);
+        ug.setAttribute("data-uv-width", "100%");
+        ug.setAttribute("data-uv-height", "550px");
+    }
+
+    // A tab to launch the Classic Widget
+    function launchClassicWidget() {
+        UserVoice = window.UserVoice || [];
+        UserVoice.push(['showLightbox', 'classic_widget', {
+            forum_id: uv_forum_id,
+            mode: uv_mode,
+            default_mode: uv_default_mode,
+            primary_color: uv_primary_color,
+            link_color: uv_link_color,
+            support_tab_name: uv_support_tab_name,
+            feedback_tab_name: uv_feedback_tab_name,
+        }]);
+    }
+
+    function run() {
+        initPlaceholder();
+        injectUservoiceScript();
+//        launchClassicWidget();
+    }
+
+    run();
   }
-	UserVoice = window.UserVoice || [];
-	UserVoice.push(['showTab', 'classic_widget', {
-	  mode: prefs.getString("uv_mode"),
-	  primary_color: getColor('uv_primary_color'),
-	  link_color: getColor("uv_link_color"),
-	  default_mode: 'feedback',
-	  forum_id: 209537,
-	  tab_label: 'Feedback & Support',
-	  tab_color: getColor("uv_tab_color"),
-	  tab_position: 'middle-right',
-	  tab_inverted: true
-	}]);
 	</script>
 
         ]]>
