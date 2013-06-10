@@ -31,7 +31,7 @@
   <UserPref
       name="uv_forum_id"
       datatype="string"
-      display_name="Forum ID"
+      display_name="Forum ID (optional)"
       default_value="" />
   <UserPref
       name="uv_mode"
@@ -84,7 +84,7 @@
     function initPlaceholder() {
         var forum_id = prefs.getString("uv_forum_id");
         var mode = prefs.getString("uv_mode");
-        var default_mode = uv_mode == "full" ? prefs.getString("uv_default_tab") : "";
+        var default_mode = prefs.getString("uv_default_tab");
         var primary_color = getColor("uv_primary_color");
         var link_color = getColor("uv_link_color");
         var support_tab_name = prefs.getString("uv_support_tab_name");
