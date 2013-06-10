@@ -76,7 +76,7 @@
     <![CDATA[
     <div id="uv_gadget"></div>
 	<script>
-  var uservoiceGadget = function () {
+  (var function () {
     var prefs = new gadgets.Prefs();
     var hexColorPattern = /^\s*([abcdef\d]{6})\s*$/i;
 
@@ -151,7 +151,7 @@
     }
 
     run();
-  }
+  })();
 	</script>
 
         ]]>
