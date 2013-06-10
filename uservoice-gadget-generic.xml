@@ -74,9 +74,9 @@
 
   <Content type="html" >
     <![CDATA[
-    <div id="uv_gadget"></div>
+  <div id="uv_gadget"></div>
 	<script>
-  (var function () {
+  (function () {
     var prefs = new gadgets.Prefs();
     var hexColorPattern = /^\s*([abcdef\d]{6})\s*$/i;
 
@@ -130,27 +130,8 @@
         ug.setAttribute("data-uv-height", "550px");
     }
 
-    // A tab to launch the Classic Widget
-    function launchClassicWidget() {
-        UserVoice = window.UserVoice || [];
-        UserVoice.push(['showLightbox', 'classic_widget', {
-            forum_id: uv_forum_id,
-            mode: uv_mode,
-            default_mode: uv_default_mode,
-            primary_color: uv_primary_color,
-            link_color: uv_link_color,
-            support_tab_name: uv_support_tab_name,
-            feedback_tab_name: uv_feedback_tab_name,
-        }]);
-    }
-
-    function run() {
-        initPlaceholder();
-        injectUservoiceScript();
-//        launchClassicWidget();
-    }
-
-    run();
+    initPlaceholder();
+    injectUservoiceScript();
   })();
 	</script>
 
