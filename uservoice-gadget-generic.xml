@@ -95,7 +95,7 @@
         var uv = document.createElement('script');
         uv.type = 'text/javascript';
         uv.async = false;
-        uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/' + uv_id + '.js';
+        uv.src = (document.location.protocol.substring(0, 5) == "https" ? 'https' : 'http') + '://widget.uservoice.com/' + uv_id + '.js';
         var s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(uv, s);
     }
