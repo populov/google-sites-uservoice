@@ -78,33 +78,32 @@
 	<script>
   (function () {
     var prefs = new gadgets.Prefs();
+    var uv_id = prefs.getString("uv_id");
     var hexColorPattern = /^\s*([abcdef\d]{6})\s*$/i;
 
     function initPlaceholder() {
-        var uv_id = prefs.getString("uv_id");
-        var uv_forum_id = prefs.getString("uv_forum_id");
-        var uv_mode = prefs.getString("uv_mode");
-        var uv_default_mode = uv_mode == "full" ? prefs.getString("uv_default_tab") : "";
-        var uv_primary_color = getColor("uv_primary_color");
-        var uv_link_color = getColor("uv_link_color");
-        var uv_tab_color = getColor("uv_tab_color");
-        var uv_support_tab_name = prefs.getString("uv_support_tab_name");
-        var uv_feedback_tab_name = prefs.getString("uv_feedback_tab_name");
+        var forum_id = prefs.getString("uv_forum_id");
+        var mode = prefs.getString("uv_mode");
+        var default_mode = uv_mode == "full" ? prefs.getString("uv_default_tab") : "";
+        var primary_color = getColor("uv_primary_color");
+        var link_color = getColor("uv_link_color");
+        var support_tab_name = prefs.getString("uv_support_tab_name");
+        var feedback_tab_name = prefs.getString("uv_feedback_tab_name");
 
         ug = document.getElementById("uv_gadget");
         ug.setAttribute("data-uv-inline", "classic_widget");
-        if (uv_forum_id)
-            ug.setAttribute("data-uv-forum-id", uv_forum_id);
-        ug.setAttribute("data-uv-mode", uv_mode);
-        if (uv_mode == "full")
-            ug.setAttribute("data-uv-default-mode", uv_default_mode);
-        if (uv_support_tab_name)
-            ug.setAttribute("data-uv-support-tab_name", uv_support_tab_name);
-        if (uv_feedback_tab_name)
-            ug.setAttribute("data-uv-feedback-tab_name", uv_feedback_tab_name);
+        if (forum_id)
+            ug.setAttribute("data-uv-forum-id", forum_id);
+        ug.setAttribute("data-uv-mode", mode);
+        if (mode == "full")
+            ug.setAttribute("data-uv-default-mode", default_mode);
+        if (support_tab_name)
+            ug.setAttribute("data-uv-support-tab_name", support_tab_name);
+        if (feedback_tab_name)
+            ug.setAttribute("data-uv-feedback-tab_name", feedback_tab_name);
 
-        ug.setAttribute("data-uv-primary-color", uv_primary_color);
-        ug.setAttribute("data-uv-link-color", uv_link_color);
+        ug.setAttribute("data-uv-primary-color", primary_color);
+        ug.setAttribute("data-uv-link-color", link_color);
         ug.setAttribute("data-uv-width", "100%");
         ug.setAttribute("data-uv-height", "100%");
     }
@@ -113,7 +112,7 @@
     function injectUservoiceScript() {
         var uv = document.createElement('script');
         uv.type = 'text/javascript';
-        uv.async = false;
+        uv.async = true;
         uv.src = (document.location.protocol.substring(0, 5) == "https" ? 'https' : 'http') + '://widget.uservoice.com/' + uv_id + '.js';
         var s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(uv, s);
