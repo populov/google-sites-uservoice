@@ -80,8 +80,9 @@
         var uv_mode = prefs.getString("uv_mode");
         var accent_color = getColor("uv_accent_color");
 
-        UserVoice.push(['embed', '#widget', {
+        UserVoice.push(['embed', '#uv_gadget', {
           mode: uv_mode,
+          trigger_position: 'top-left',
           height: '100%',
           width: '100%'
         }]);
