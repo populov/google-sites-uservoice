@@ -78,11 +78,11 @@
     function pushUserVoice() {
         var forum_id = prefs.getString("uv_forum_id");
         var uv_mode = prefs.getString("uv_mode");
-        var accent_color = getColor("uv_accent_color");
+        var uv_accent_color = getColor("uv_accent_color");
 
         UserVoice.push(['embed', '#uv_gadget', {
           mode: uv_mode,
-          trigger_position: 'top-left',
+          accent_color: uv_accent_color,
           height: '100%',
           width: '100%'
         }]);
