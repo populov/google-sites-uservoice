@@ -56,7 +56,7 @@
 
     <Content type="html" >
         <![CDATA[
-  <div id="uv_gadget"></div>
+  <div id="uv_gadget">Loading...</div>
 	<script>
   (function () {
     var prefs = new gadgets.Prefs();
