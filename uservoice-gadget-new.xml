@@ -87,6 +87,18 @@
         }]);
     }
 
+    function getColor(color_target) {
+        var hexColorPattern = /^\s*([abcdef\d]{6})\s*$/i;
+        var value = prefs.getString(color_target);
+        if (value == null || value == "")
+            return null;
+        var matches = hexColorPattern.exec(value);
+        if (matches != null && matches.length > 0)
+            return "#" + matches[1];
+        else
+            return value;
+    }
+
     injectUservoiceScript();
     pushUserVoice();
   })();
